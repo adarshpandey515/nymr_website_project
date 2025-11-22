@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { memo } from "react";
 
 export interface RuleResult {
   rule: string;
@@ -10,7 +10,8 @@ export interface RuleResult {
 
 interface Props { results: RuleResult[]; raw?: any; }
 
-const Results: React.FC<Props> = ({ results, raw }) => {
+// Performance optimization: memoize Results component to prevent unnecessary re-renders
+const Results: React.FC<Props> = memo(({ results, raw }) => {
   if (!results || results.length === 0) return null;
   return (
     <div style={{marginTop:"1.5rem"}}>
@@ -41,9 +42,11 @@ const Results: React.FC<Props> = ({ results, raw }) => {
       </details>
     </div>
   );
-};
+});
 
 const th: React.CSSProperties = {textAlign:"left", padding:"0.5rem", background:"#f5f5f5", fontSize:"0.8rem"};
 const td: React.CSSProperties = {verticalAlign:"top", padding:"0.45rem", fontSize:"0.75rem"};
+
+Results.displayName = 'Results';
 
 export default Results;

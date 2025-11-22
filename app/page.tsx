@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import RuleEditor, { Rule } from "./components/RuleEditor";
 import Results, { RuleResult } from "./components/Results";
 
@@ -21,6 +21,12 @@ export default function Home() {
       fd.append("file", file);
       fd.append("rules", JSON.stringify(rules.map(r => r.text)));
       const res = await fetch("/api/check", { method: "POST", body: fd });
+      
+      // Improved error handling: check response status
+      if (!res.ok) {
+        throw new Error(`Request failed with status ${res.status}`);
+      }
+      
       const json = await res.json();
       setRaw(json);
       setResults(json.results || []);
@@ -30,6 +36,15 @@ export default function Home() {
       setLoading(false);
     }
   }
+
+  // Performance optimization: use useCallback to memoize reset function
+  const handleReset = useCallback(() => {
+    setFile(null);
+    setRules([]);
+    setResults([]);
+    setRaw(null);
+    setError(null);
+  }, []);
 
   return (
     <main style={{maxWidth:800, margin:"0 auto", padding:"2rem", fontFamily:"system-ui, sans-serif"}}>
@@ -47,7 +62,7 @@ export default function Home() {
 
       <div style={{marginTop:"1rem", display:"flex", gap:"0.75rem"}}>
         <button disabled={loading} onClick={submit}>{loading ? "Checking..." : "Check Rules"}</button>
-        <button type="button" onClick={() => {setFile(null); setRules([]); setResults([]); setRaw(null);}}>Reset</button>
+        <button type="button" onClick={handleReset}>Reset</button>
       </div>
       {error && <p style={{color:"#b00", fontSize:"0.8rem"}}>{error}</p>}
 

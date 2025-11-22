@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 
 export interface Rule {
   id: string;
@@ -14,20 +14,21 @@ const RuleEditor: React.FC<Props> = ({ onChange }) => {
   const [input, setInput] = useState("");
   const [rules, setRules] = useState<Rule[]>([]);
 
-  function addRule() {
+  // Performance optimization: use useCallback to memoize functions
+  const addRule = useCallback(() => {
     const trimmed = input.trim();
     if (!trimmed) return;
     const next = [...rules, { id: crypto.randomUUID(), text: trimmed }];
     setRules(next);
     onChange(next);
     setInput("");
-  }
+  }, [input, rules, onChange]);
 
-  function remove(id: string) {
+  const remove = useCallback((id: string) => {
     const next = rules.filter(r => r.id !== id);
     setRules(next);
     onChange(next);
-  }
+  }, [rules, onChange]);
 
   return (
     <div style={{border:"1px solid #ccc", padding:"1rem", borderRadius:8}}>
