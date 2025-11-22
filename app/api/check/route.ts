@@ -25,12 +25,17 @@ export async function POST(req: NextRequest) {
   }
 
   // Fake evaluation logic now: random pass/fail + snippet search
+  // Performance optimization: cache lowercased text to avoid repeated toLowerCase() calls
+  const lowerText = text.toLowerCase();
+  
   const results = rules.map(r => {
     const passed = Math.random() > 0.5;
     const score = Math.round(Math.random() * 100);
     let snippet = undefined as string | undefined;
     if (text) {
-      const idx = text.toLowerCase().indexOf(r.toLowerCase().split(" ")[0]);
+      // Performance optimization: extract and lowercase search term once
+      const searchTerm = r.toLowerCase().split(" ")[0];
+      const idx = lowerText.indexOf(searchTerm);
       if (idx !== -1) snippet = text.slice(idx, idx + 140);
     }
     return { rule: r, passed, score, snippet };
