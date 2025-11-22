@@ -1,4 +1,6 @@
-export const metadata = {
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
   title: 'PDF Rule Checker',
   description: 'Upload a PDF, add rules, get quick pass/fail + JSON',
 }
