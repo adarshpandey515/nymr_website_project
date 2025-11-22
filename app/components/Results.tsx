@@ -4,8 +4,8 @@ import React from "react";
 export interface RuleResult {
   rule: string;
   passed: boolean;
-  score: number;
-  snippet?: string;
+  confidence: number;
+  evidence?: string;
 }
 
 interface Props { results: RuleResult[]; raw?: any; }
@@ -20,17 +20,17 @@ const Results: React.FC<Props> = ({ results, raw }) => {
           <tr>
             <th style={th}>Rule</th>
             <th style={th}>Pass?</th>
-            <th style={th}>Score</th>
-            <th style={th}>Snippet</th>
+            <th style={th}>Confidence</th>
+            <th style={th}>Evidence</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="w-full">
           {results.map((r,i) => (
             <tr key={i} style={{borderTop:"1px solid #eee"}}>
               <td style={td}>{r.rule}</td>
               <td style={td}>{r.passed ? "Yes" : "No"}</td>
-              <td style={td}>{r.score}</td>
-              <td style={td}>{r.snippet?.slice(0,90)}</td>
+              <td style={td}>{r.confidence}</td>
+              <td style={td}>{r.evidence}</td>
             </tr>
           ))}
         </tbody>
