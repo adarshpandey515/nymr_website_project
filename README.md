@@ -24,7 +24,7 @@ Supported model: llama-3.1-70b-versatile (or change to any Groq model).
 ## Quick Start
 
 ```bash
-npm install
+npm install --force
 npm run dev
 ```
 
