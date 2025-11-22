@@ -1,3 +1,7 @@
+
+![alt text](image.png)
+
+![alt text](image-1.png)
 # PDF Rule Checker (Next.js Demo)
 
 Single-page demo: upload a PDF, add rules, click check, see pass/fail + JSON. Current logic is stubby: random scores + simple text snippet search. Intended as scaffolding to plug real validation later.
@@ -10,9 +14,6 @@ Single-page demo: upload a PDF, add rules, click check, see pass/fail + JSON. Cu
 - ✂️ Auto chunking when documents exceed token limits
 - 💬 Front-end UI for uploading PDF + adding rules
 - 📌 Output includes: `passed`, `evidence`, and validation metadata
-
----
-
 
 ## 🔧 Environment / API Key
 
